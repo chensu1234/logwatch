@@ -2,11 +2,11 @@
 
 **A powerful, real-time log file tailing, parsing, and forwarding tool for DevOps and SREs.**
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/cielavenir/logwatch/ci.yml?branch=main&logo=github)](https://github.com/cielavenir/logwatch/actions)
-[![Go Version](https://img.shields.io/github/go-mod/go-version/cielavenir/logwatch?logo=go)](https://golang.org/)
-[![License](https://img.shields.io/github/license/cielavenir/logwatch?logo=gpl-3.0)](LICENSE)
-[![Releases](https://img.shields.io/github/v/release/cielavenir/logwatch?logo=tag&include_prereleases)](https://github.com/cielavenir/logwatch/releases)
-[![Stars](https://img.shields.io/github/stars/cielavenir/logwatch?logo=star)](https://github.com/cielavenir/logwatch/stargazers)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/chensu1234/logwatch/ci.yml?branch=main&logo=github)](https://github.com/chensu1234/logwatch/actions)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/chensu1234/logwatch?logo=go)](https://golang.org/)
+[![License](https://img.shields.io/github/license/chensu1234/logwatch?logo=gpl-3.0)](LICENSE)
+[![Releases](https://img.shields.io/github/v/release/chensu1234/logwatch?logo=tag&include_prereleases)](https://github.com/chensu1234/logwatch/releases)
+[![Stars](https://img.shields.io/github/stars/chensu1234/logwatch?logo=star)](https://github.com/chensu1234/logwatch/stargazers)
 
 ---
 
@@ -38,18 +38,18 @@ If you need to aggregate logs from multiple sources, build a lightweight log pip
 
 ```bash
 # macOS (Apple Silicon)
-curl -sSL https://github.com/cielavenir/logwatch/releases/latest/download/logwatch-darwin-arm64.tar.gz | tar -xz
+curl -sSL https://github.com/chensu1234/logwatch/releases/latest/download/logwatch-darwin-arm64.tar.gz | tar -xz
 sudo mv logwatch /usr/local/bin/
 
 # Linux (x86_64)
-curl -sSL https://github.com/cielavenir/logwatch/releases/latest/download/logwatch-linux-amd64.tar.gz | tar -xz
+curl -sSL https://github.com/chensu1234/logwatch/releases/latest/download/logwatch-linux-amd64.tar.gz | tar -xz
 sudo mv logwatch /usr/local/bin/
 ```
 
 **From source**
 
 ```bash
-git clone https://github.com/cielavenir/logwatch.git
+git clone https://github.com/chensu1234/logwatch.git
 cd logwatch
 make build
 sudo make install
@@ -58,10 +58,10 @@ sudo make install
 **Docker**
 
 ```bash
-docker pull ghcr.io/cielavenir/logwatch:latest
+docker pull ghcr.io/chensu1234/logwatch:latest
 docker run --rm \
   -v /var/log/myapp.log:/var/log/myapp.log:ro \
-  ghcr.io/cielavenir/logwatch:latest \
+  ghcr.io/chensu1234/logwatch:latest \
   --config /etc/logwatch/config.yaml
 ```
 

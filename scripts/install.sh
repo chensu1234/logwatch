@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # ─────────────────────────────────────────────────────────────────────────────
 # logwatch quick-install script
-# Usage: curl -sSL https://raw.githubusercontent.com/cielavenir/logwatch/main/scripts/install.sh | bash
+# Usage: curl -sSL https://raw.githubusercontent.com/chensu1234/logwatch/main/scripts/install.sh | bash
 # ─────────────────────────────────────────────────────────────────────────────
 set -euo pipefail
 
-VERSION="${VERSION:-$(curl -sSL https://api.github.com/repos/cielavenir/logwatch/releases/latest 2>/dev/null | grep '"tag_name"' | sed 's/.*"v\?\([^"]*\)".*/\1/' || echo '0.3.0')}"
+VERSION="${VERSION:-$(curl -sSL https://api.github.com/repos/chensu1234/logwatch/releases/latest 2>/dev/null | grep '"tag_name"' | sed 's/.*"v\?\([^"]*\)".*/\1/' || echo '0.3.0')}"
 INSTALL_PREFIX="${INSTALL_PREFIX:-/usr/local/bin}"
 FORCE="${FORCE:-}"
 
@@ -21,7 +21,7 @@ case "$ARCH" in
 esac
 
 ARTIFACT="logwatch-${OS}-${ARCH}.tar.gz"
-DOWNLOAD_URL="https://github.com/cielavenir/logwatch/releases/latest/download/${ARTIFACT}"
+DOWNLOAD_URL="https://github.com/chensu1234/logwatch/releases/latest/download/${ARTIFACT}"
 INSTALL_PATH="${INSTALL_PREFIX}/logwatch"
 
 # Check for existing installation.
