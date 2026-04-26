@@ -1,0 +1,102 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# logwatch full configuration reference
+# Copy to /etc/logwatch/config.yaml and adjust for your environment.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── Sources ─────────────────────────────────────────────────────────────────
+# Each source describes a file (or glob pattern) to watch.
+sources:
+  # Application logs in JSON Lines format.
+  - path: /var/log/myapp/*.log
+    name: myapp
+    # Optional: force a parser. Default "auto" detects format automatically.
+    # Valid: auto | json | syslog | nginx | raw
+    parse: json
+    # Lines longer than this (bytes) are skipped. Default: 65536.
+    maxLineLength: 65536
+
+  # Nginx access logs — parsed into structured fields.
+  - path: /var/log/nginx/access.log
+    name: nginx
+    parse: nginx
+
+  # Syslog from /var/log/syslog.
+  - path: /var/log/syslog
+    name: syslog
+    parse: syslog
+
+# ── Pipeline ────────────────────────────────────────────────────────────────
+# The pipeline processes each line in order: parse → filter → transform.
+pipeline:
+  # Default parse mode when source doesn't specify one.
+  parse: auto
+
+  # Minimum log level to forward. Valid: debug | info | warn | error | fatal.
+  minLevel: info
+
+  # Only forward lines matching this regex.
+  # includeRegex: "^\\["
+
+  # Skip lines matching this regex.
+  excludeRegex: "healthcheck|pulse"
+
+  # Drop events where a field equals a specific value.
+  # drop:
+  #   field: level
+  #   value: debug
+
+  # Field transformations applied in order.
+  transforms:
+    - action: add
+      field: service
+      value: myapp           # static value
+
+    - action: rename
+      field: ts
+      to: timestamp
+
+    - action: remove
+      field: .env            # . prefix = regex match on key
+
+    - action: set
+      field: environment
+      value: production
+
+# ── Outputs ─────────────────────────────────────────────────────────────────
+# Events are delivered to every configured output.
+outputs:
+  # ── Pretty stdout (useful during development) ──────────────────────────
+  - type: stdout
+    color: true
+
+  # ── Rotating file output ────────────────────────────────────────────────
+  - type: file
+    url: /var/log/collected/app.jsonl
+    maxSize: 104857600        # 100 MB per file
+    maxBackups: 5             # keep 5 old files
+    compress: true           # gzip old files
+
+  # ── Elasticsearch ───────────────────────────────────────────────────────
+  - type: elasticsearch
+    url: http://elasticsearch:9200
+    index: logs-%Y%m%d       # strftime pattern; daily indices
+    username: elastic
+    password: changeme
+    bufferSize: 1000         # events per bulk request
+    flushInterval: 5s       # force flush after this
+
+  # ── Kafka ──────────────────────────────────────────────────────────────
+  - type: kafka
+    url: kafka-1:9092,kafka-2:9092
+    topic: logs
+    compression: gzip        # none | gzip | snappy | lz4 | zstd
+    retryMax: 3
+
+  # ── HTTP webhook ───────────────────────────────────────────────────────
+  - type: webhook
+    url: https://logs.example.com/api/v1/ingest
+    headers:
+      Authorization: "Bearer $LOGWATCH_WEBHOOK_TOKEN"
+      X-App-Name: logwatch
+    batchSize: 50
+    retryMax: 3
